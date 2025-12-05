@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 interface ICard {
   name: string;
   link: string;
-  owner: Schema.Types.ObjectId;
+  owner: string; // Schema.Types.ObjectId
   likes: Schema.Types.ObjectId[];
   createdAt: Date;
 }
@@ -20,7 +20,7 @@ const cardSchema = new Schema<ICard>({
     required: true,
   },
   owner: {
-    type: Schema.Types.ObjectId,
+    type: String, // Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
