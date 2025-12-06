@@ -30,6 +30,4 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// создаём модель и экспортируем её
-// TS-интерфейс модели User
 export default mongoose.model<IUser>('user', userSchema);

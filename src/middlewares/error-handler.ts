@@ -1,7 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import { CustomError } from '../errors/custom-error';
 
-// eslint-disable-next-line max-len, import/prefer-default-export, no-unused-vars
-export const errorHandler = async (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.log(err.name);
-  res.status(500).send({ message: 'На сервере произошла ошибка' });
+export const errorHandler = async (
+ err: Error,
+ _req: Request,
+ res: Response,
+ _next: NextFunction,
+) => {
+
+ if (err instanceof CustomError) {
+   return res.status(err.statusCode).json(err.serializeError());
+ }
+
+ res.status(500).send('На сервере произошла ошибка');
 };
