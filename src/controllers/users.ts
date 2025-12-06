@@ -9,21 +9,21 @@ interface CustomRequest extends Request {
 
 export const getUsers = (req: Request, res: Response) => User.find({})
   .then((users) => res.send(users))
-  .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  .catch(() => res.status(404).send({ message: 'Произошла ошибка' }));
 
 export const getUserById = (req: Request, res: Response) => {
   const id = req.params.userId;
 
   return User.findById(id)
     .then((users) => res.send(users))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(404).send({ message: 'Запрашиваемый пользователь не найден' }));
 };
 
 export const createUser = (req: Request, res: Response) => {
   const { name, about, avatar } = req.body;
 
   return User.create({ name, about, avatar })
-    .then((user) => res.send(user))
+    .then((user) => res.status(201).send(user))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 

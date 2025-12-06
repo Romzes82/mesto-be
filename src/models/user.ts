@@ -6,24 +6,29 @@ interface IUser {
   avatar: string;
 }
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      minlength: 2,
+      maxlength: 30,
+    },
+    about: {
+      type: String,
+      required: true,
+      minlength: 2,
+      maxlength: 200,
+    },
+    avatar: {
+      type: String,
+      required: true,
+    },
   },
-  about: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 200,
+  {
+    versionKey: false,
   },
-  avatar: {
-    type: String,
-    required: true,
-  },
-});
+);
 
 // создаём модель и экспортируем её
 // TS-интерфейс модели User
