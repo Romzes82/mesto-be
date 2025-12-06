@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import User from '../models/user';
-import { NotFoundError } from '../errors/not-found-error';
-import { BadRequestError } from '../errors/bad-request-error';
+import NotFoundError from '../errors/not-found-error';
+import BadRequestError from '../errors/bad-request-error';
 
 interface CustomRequest extends Request {
   user?: {
@@ -11,21 +11,21 @@ interface CustomRequest extends Request {
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.send(users))
-  .catch(err => next(err))
+  .catch((err) => next(err));
 
 export const getUserById = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.userId;
 
   return User.findById(id)
 
-  .then((user) => {
-    if (!user) {
-      throw new NotFoundError('Нет пользователя с таким id');
-    }
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Нет пользователя с таким id');
+      }
 
-    res.send(user);
-  })
-  .catch(next);
+      res.send(user);
+    })
+    .catch(next);
 };
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
@@ -36,8 +36,8 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
   }
 
   return User.create({ name, about, avatar })
-  .then((user) => res.status(201).send(user))
-  .catch(next);
+    .then((user) => res.status(201).send(user))
+    .catch(next);
 };
 
 export const updateUser = (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -48,14 +48,14 @@ export const updateUser = (req: CustomRequest, res: Response, next: NextFunction
   }
 
   return User.findByIdAndUpdate(req.user!._id, { name, about }, { new: true })
-  .then((user) => {
-    if (!user) {
-      throw new NotFoundError('Нет пользователя с таким id');
-    }
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Нет пользователя с таким id');
+      }
 
-    res.send(user);
-  })
-  .catch(next);
+      res.send(user);
+    })
+    .catch(next);
 };
 
 export const updateAvatar = (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -68,11 +68,11 @@ export const updateAvatar = (req: CustomRequest, res: Response, next: NextFuncti
 
   return User.findByIdAndUpdate(id, { avatar }, { new: true })
     .then((user) => {
-    if (!user) {
-      throw new NotFoundError('Нет пользователя с таким id');
-    }
+      if (!user) {
+        throw new NotFoundError('Нет пользователя с таким id');
+      }
 
-    res.send(user);
-  })
-  .catch(next);
+      res.send(user);
+    })
+    .catch(next);
 };

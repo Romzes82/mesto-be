@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { errorHandler } from './middlewares/error-handler';
+import errorHandler from './middlewares/error-handler';
 import userRouter from './routes/users';
 import cardRouter from './routes/cards';
 
@@ -21,5 +21,6 @@ app.use('/cards', cardRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 });
