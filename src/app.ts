@@ -5,10 +5,12 @@ import userRouter from './routes/users';
 import cardRouter from './routes/cards';
 
 import hardCodeUserId from './middlewares/auth-hardcode-id';
+import rateLimit from 'express-rate-limit';
 
 const { PORT = 3003 } = process.env;
 
 const app = express();
+app.use(rateLimit());
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
