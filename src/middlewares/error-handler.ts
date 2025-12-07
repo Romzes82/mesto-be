@@ -12,6 +12,7 @@ const errorHandler = async (
     return res.status(err.statusCode).json(err.serializeError());
   }
 
+  // return res.send(err)
   return res.status(500).send('На сервере произошла ошибка');
 };
 

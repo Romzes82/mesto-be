@@ -3,6 +3,7 @@ import User from '../models/user';
 import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import { CustomRequest } from '../types/custom-request';
+import mongoose from 'mongoose';
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.send(users))
@@ -26,32 +27,104 @@ export const getUserById = (req: Request, res: Response, next: NextFunction) => 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
   const { name, about, avatar } = req.body;
 
-  if (!name || !about || !avatar) {
-    throw new BadRequestError('Переданы некорректные данные при создании пользователя');
-  }
+  // if (!name || !about || !avatar) {
+  //   throw new BadRequestError('Переданы некорректные данные при создании пользователя');
+  // }
 
   return User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
-    .catch(next);
+    .catch((err) => {
+    if (err.name == "ValidationError") {
+        // направляем в блок next ошибку валидации
+        return next(new BadRequestError(err.message));
+    }
+    else {
+        return next(err); //Непредвиденная ошибка
+    }
+  })
+//     .catch((err) => {
+//     if (err.name == "ValidationError") {
+//       throw new BadRequestError('Переданы некорректные данные при создании пользователя');
+//         // направляем в блок next ошибку валидации
+//     }
+//     else {
+//         return next(err); //Непредвиденная ошибка
+//     }
+// }) 
+    // .catch(next);
 };
 
 export const updateUser = (req: CustomRequest, res: Response, next: NextFunction) => {
   const { name, about } = req.body;
 
-  if (!name || !about) {
-    throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
-  }
+  return User.findByIdAndUpdate(req.user!._id, { name, about }, {  
+    runValidators: true, 
+    new: true 
+  })
+  .then((user) => {
+    if (!user) {
+      throw new NotFoundError('Нет пользователя с таким id'); 
+    }
+    res.send(user);
+  })
+  .catch((err) => {
+    if (err.name == "ValidationError") {
+      return next(new BadRequestError(err.message));
+    }
+    else {
+      return next(err); 
+    }
+  })};
 
-  return User.findByIdAndUpdate(req.user!._id, { name, about }, { new: true })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
-      }
 
-      res.send(user);
-    })
-    .catch(next);
-};
+// export const updateUser = (req: CustomRequest, res: Response, next: NextFunction) => {
+//   const { name, about } = req.body;
+
+//   // if (!name || !about) {
+//   //   throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
+//   // }
+//    const c = new mongoose.Types.ObjectId('693487c3b33d8662679725d41_')
+//   //  req.user!._id
+
+//   return User.findByIdAndUpdate(c, { name, about }, {  runValidators: true, new: true })
+//   // .orFail(
+//   //   () => new NotFoundError('Пользователь с таким id не найден')
+//   // )
+//     // .then((user) => res.send(user))
+//     .then((user) => {
+//       console.log(user)
+//       if (!user) {
+//         // throw new NotFoundError('Нет пользователя с таким id');
+//         console.log('нет пользователя')
+//         // throw new NotFoundError('Нет пользователя с таким id');
+//         // return Promise.reject(new NotFoundError('Нет пользователя с таким id'));
+//         return next(new NotFoundError('Нет пользователя с таким id')); 
+//       }
+
+//       res.send(user)})
+//     .catch((err) => {
+//     if (err.name == "ValidationError") {
+//         // направляем в блок next ошибку валидации
+//         return next(new BadRequestError(err.message));
+//     }
+//     // else if (err instanceof NotFoundError) {
+//     //   return next(err);
+//     // } else {
+//     //   return next(err);
+//     // }
+//     else {
+//         return next(err); //Непредвиденная ошибка
+//     }
+//   })
+//     // .then((user) => {
+//     //   if (!user) {
+//     //     throw new NotFoundError('Нет пользователя с таким id');
+//     //   }
+
+//     //   res.send(user);
+//     // })
+//     // .catch(next);
+// };
 
 export const updateAvatar = (req: CustomRequest, res: Response, next: NextFunction) => {
   const { avatar } = req.body;
