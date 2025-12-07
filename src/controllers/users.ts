@@ -2,12 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import User from '../models/user';
 import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
-
-interface CustomRequest extends Request {
-  user?: {
-    _id: string;
-  };
-}
+import { CustomRequest } from '../types/custom-request';
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.send(users))

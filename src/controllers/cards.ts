@@ -2,12 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Card from '../models/card';
 import BadRequestError from '../errors/bad-request-error';
 import NotFoundError from '../errors/not-found-error';
-
-interface CustomRequest extends Request {
-  user?: {
-    _id: string;
-  };
-}
+import { CustomRequest } from '../types/custom-request';
 
 export const createCard = (req: CustomRequest, res: Response, next: NextFunction) => {
   const { name, link } = req.body;
