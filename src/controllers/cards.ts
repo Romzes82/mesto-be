@@ -38,42 +38,42 @@ export const deleteCard = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
-export const likeCard = (req: CustomRequest, res: Response, next: NextFunction) => {
-  if (!req.params!.cardId) {
-    throw new BadRequestError('Переданы некорректные данные для постановки лайка');
-  }
+// eslint-disable-next-line max-len
+export const likeCard = (req: CustomRequest, res: Response, next: NextFunction) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $addToSet: { likes: req.user!._id } },
+  { new: true },
+)
+  .then((card) => {
+    if (!card) {
+      throw new NotFoundError('Карточка с указанным _id не найдена');
+    }
+    res.send(card);
+  })
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      return next(new BadRequestError(`Переданы некорректные данные для постановки лайка: ${err.message}`));
+    }
 
-  return Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user!._id } },
-    { new: true },
-  )
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка с указанным _id не найдена');
-      }
+    return next(err);
+  });
 
-      res.send(card);
-    })
-    .catch(next);
-};
+// eslint-disable-next-line max-len
+export const dislikeCard = (req: CustomRequest, res: Response, next: NextFunction) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $pull: { likes: req.user!._id } },
+  { new: true },
+)
+  .then((card) => {
+    if (!card) {
+      throw new NotFoundError('Карточка с указанным _id не найдена');
+    }
+    res.send(card);
+  })
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      return next(new BadRequestError(`Переданы некорректные данные для снятия лайка: ${err.message}`));
+    }
 
-export const dislikeCard = (req: CustomRequest, res: Response, next: NextFunction) => {
-  if (!req.params!.cardId) {
-    throw new BadRequestError('Переданы некорректные данные для снятия лайка');
-  }
-
-  return Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user!._id } },
-    { new: true },
-  )
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка с указанным _id не найдена');
-      }
-
-      res.send(card);
-    })
-    .catch(next);
-};
+    return next(err);
+  });

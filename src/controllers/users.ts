@@ -60,72 +60,9 @@ export const updateUser = (req: CustomRequest, res: Response, next: NextFunction
     });
 };
 
-// export const updateUser = (req: CustomRequest, res: Response, next: NextFunction) => {
-//   const { name, about } = req.body;
-
-//   // if (!name || !about) {
-//   //   throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
-//   // }
-//    const c = new mongoose.Types.ObjectId('693487c3b33d8662679725d41_')
-//   //  req.user!._id
-
-//   return User.findByIdAndUpdate(c, { name, about }, {  runValidators: true, new: true })
-//   // .orFail(
-//   //   () => new NotFoundError('Пользователь с таким id не найден')
-//   // )
-//     // .then((user) => res.send(user))
-//     .then((user) => {
-//       console.log(user)
-//       if (!user) {
-//         // throw new NotFoundError('Нет пользователя с таким id');
-//         console.log('нет пользователя')
-//         // throw new NotFoundError('Нет пользователя с таким id');
-//         // return Promise.reject(new NotFoundError('Нет пользователя с таким id'));
-//         return next(new NotFoundError('Нет пользователя с таким id'));
-//       }
-
-//       res.send(user)})
-//     .catch((err) => {
-//     if (err.name == "ValidationError") {
-//         // направляем в блок next ошибку валидации
-//         return next(new BadRequestError(err.message));
-//     }
-//     // else if (err instanceof NotFoundError) {
-//     //   return next(err);
-//     // } else {
-//     //   return next(err);
-//     // }
-//     else {
-//         return next(err); //Непредвиденная ошибка
-//     }
-//   })
-//     // .then((user) => {
-//     //   if (!user) {
-//     //     throw new NotFoundError('Нет пользователя с таким id');
-//     //   }
-
-//     //   res.send(user);
-//     // })
-//     // .catch(next);
-// };
-
 export const updateAvatar = (req: CustomRequest, res: Response, next: NextFunction) => {
   const { avatar } = req.body;
   const id = req.user!._id;
-
-  // if (avatar) {
-  //   throw new BadRequestError('Переданы некорректные данные при обновлении аватара');
-  // }
-
-  // return User.findByIdAndUpdate(id, { avatar }, { new: true })
-  //   .then((user) => {
-  //     if (!user) {
-  //       throw new NotFoundError('Нет пользователя с таким id');
-  //     }
-
-  //     res.send(user);
-  //   })
-  //   .catch(next);
 
   return User.findByIdAndUpdate(id, { avatar }, {
     runValidators: true,
