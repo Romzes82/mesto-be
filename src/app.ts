@@ -1,11 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import rateLimit from 'express-rate-limit';
 import errorHandler from './middlewares/error-handler';
 import userRouter from './routes/users';
 import cardRouter from './routes/cards';
 
 import hardCodeUserId from './middlewares/auth-hardcode-id';
-import rateLimit from 'express-rate-limit';
 
 const { PORT = 3003 } = process.env;
 

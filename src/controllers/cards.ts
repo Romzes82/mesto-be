@@ -8,29 +8,19 @@ export const createCard = (req: CustomRequest, res: Response, next: NextFunction
   const { name, link } = req.body;
   const owner = req.user!._id;
 
-  // if (!name || !link) {
-  //   throw new BadRequestError('Переданы некорректные данные при создании карточки');
-  // }
-    // if (err.name == "ValidationError") {
-    //     // направляем в блок next ошибку валидации
-    //     next(err);
-    // }
-
   return Card.create({ name, link, owner })
     .then((itemCard) => res.status(201).send(itemCard))
-    // .catch((err) => next(err));
     .catch((err) => {
-    if (err.name == "ValidationError") {
+      if (err.name === 'ValidationError') {
         // направляем в блок next ошибку валидации
         return next(new BadRequestError(err.message));
-    }
-    else {
-        return next(err); //Непредвиденная ошибка
-    }
-  })
+      }
+
+      return next(err); // Непредвиденная ошибка
+    });
 };
 
-export const getCards = (req: Request, res: Response, next: NextFunction) => Card.find({}).populate('owner')
+export const getCards = (_req: Request, res: Response, next: NextFunction) => Card.find({}).populate('owner')
   .then((cards) => res.send(cards))
   .catch((err) => next(err));
 
