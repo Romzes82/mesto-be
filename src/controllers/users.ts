@@ -3,6 +3,13 @@ import User from '../models/user';
 import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import { CustomRequest } from '../types/custom-request';
+import ConflictError from '../errors/conflict-error';
+
+export const login = (req: Request, res: Response, next: NextFunction) => {
+  const { email, password } = req.body;
+
+  // return User.findUserByCredentionals(email, password).then
+};
 
 export const getUsers = (_req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.send(users))
@@ -24,14 +31,23 @@ export const getUserById = (req: Request, res: Response, next: NextFunction) => 
 };
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const { name, about, avatar } = req.body;
+  const {
+    email, password, name, about, avatar,
+  } = req.body;
 
-  return User.create({ name, about, avatar })
+  return User.create({
+    email, password, name, about, avatar,
+  })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         // направляем в блок next ошибку валидации
         return next(new BadRequestError(err.message));
+      }
+
+      if (err.name === 'MongooseError' && err.cause?.code === 11000) {
+        // направляем в блок next ошибку конфликта
+        return next(new ConflictError(err.message));
       }
 
       return next(err); // Непредвиденная ошибка

@@ -1,3 +1,6 @@
+# env
+.env
+
 # Logs
 logs
 *.log
@@ -15,4 +18,4 @@ node_modules
 .vscode
 
 # Typescript build
-dist 
+dist
