@@ -1,14 +1,30 @@
 import { NextFunction, Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+// import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import { CustomRequest } from '../types/custom-request';
 import ConflictError from '../errors/conflict-error';
 
+// const { JWT_SECRET } = process.env;
+const ONE_WEEK = 3600000 * 24 * 7;
+
 export const login = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
-  // return User.findUserByCredentionals(email, password).then
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = user.generateToken(); //jwt.sign({ _id: user._id }, JWT_SECRET);
+      return res
+        .cookie('jwt', token, {
+          maxAge: ONE_WEEK,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .send({ message: 'Аутентификация успешно пройдена' });
+    })
+    .catch(next);
 };
 
 export const getUsers = (_req: Request, res: Response, next: NextFunction) => User.find({})
@@ -35,9 +51,11 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
     email, password, name, about, avatar,
   } = req.body;
 
-  return User.create({
-    email, password, name, about, avatar,
-  })
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      // return User.create({
+      email, password: hash, name, about, avatar,
+    }))
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {

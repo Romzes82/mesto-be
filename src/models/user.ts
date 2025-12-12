@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 interface IUser {
   email: string;
@@ -7,6 +9,18 @@ interface IUser {
   name: string;
   about: string;
   avatar: string;
+  generateToken: () => string;
+}
+
+interface IUserDoc extends mongoose.Document, IUser {}
+
+interface IUserModel extends mongoose.Model<IUserDoc> {
+  findUserByCredentials: (
+    // eslint-disable-next-line no-unused-vars
+    email: string,
+    // eslint-disable-next-line no-unused-vars
+    password: string,
+  ) => Promise<IUserDoc | never>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -52,4 +66,39 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model<IUser>('user', userSchema);
+// eslint-disable-next-line func-names
+userSchema.methods.generateToken = function () {
+  // this - ссылка на конкретный документ пользователя
+  // функцию вызываем на экземпляре
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET as string, {
+    expiresIn: '7d',
+  });
+};
+
+// eslint-disable-next-line max-len
+// userSchema.static('findUserByCredentials', function findUserByCredentials(email: string, password: string) {
+// this - ссылка на модель User
+// функцию вызываем на модели
+// }
+
+userSchema.static('findUserByCredentials', function findUserByCredentials(email: string, password: string) {
+// this - ссылка на модель User
+// функцию вызываем на модели
+  return this.findOne({ email })
+    .then((user: IUser) => {
+      if (!user) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new Error('Неправильные почта или пароль'));
+          }
+
+          return user; // теперь user доступен
+        });
+    });
+});
+
+export default mongoose.model<IUser, IUserModel>('user', userSchema);
