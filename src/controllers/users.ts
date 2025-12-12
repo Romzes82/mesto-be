@@ -15,8 +15,11 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = user.generateToken(); //jwt.sign({ _id: user._id }, JWT_SECRET);
+      // jwt.sign({ _id: user._id }, JWT_SECRET);
+      const token = user.generateToken();
+      console.log(token);
       return res
+        .status(201)
         .cookie('jwt', token, {
           maxAge: ONE_WEEK,
           httpOnly: true,
@@ -56,7 +59,19 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
       // return User.create({
       email, password: hash, name, about, avatar,
     }))
-    .then((user) => res.status(201).send(user))
+    // .then((user) => res.status(201).send(user))
+    .then((user) => {
+      // jwt.sign({ _id: user._id }, JWT_SECRET);
+      const token = user.generateToken();
+      return res
+        .status(201)
+        .cookie('jwt', token, {
+          maxAge: ONE_WEEK,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .send({ message: 'The user has been created' });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         // направляем в блок next ошибку валидации

@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import NotAuthorizedError from '../errors/not-authorized-error';
+// import { login } from '../controllers/users';
 
 interface IUser {
   email: string;
@@ -87,13 +89,18 @@ userSchema.static('findUserByCredentials', function findUserByCredentials(email:
   return this.findOne({ email })
     .then((user: IUser) => {
       if (!user) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
+        return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
+        // тут надо обязательные поля наверное еще
       }
+
+      // console.log(`1 - ${user}`);
+      // console.log(`2 - ${password}`);
+      // console.log(`3 - ${user.password}`);
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new Error('Неправильные почта или пароль'));
+            return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
           }
 
           return user; // теперь user доступен
