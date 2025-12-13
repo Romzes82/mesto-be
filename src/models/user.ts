@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: [true, 'Поле "name" должно быть заполнено'],
+      // required: [true, 'Поле "name" должно быть заполнено'],
       minlength: [2, 'Минимальная длина поля "name" - 2'],
       maxlength: [30, 'Максимальная длина поля "name" - 30'],
       default: 'Жак-Ив Кусто',
@@ -52,14 +52,14 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      required: [true, 'Поле "about" должно быть заполнено'],
+      // required: [true, 'Поле "about" должно быть заполнено'],
       minlength: [2, 'Минимальная длина поля "about" - 2'],
       maxlength: [200, 'Максимальная длина поля "about" - 200'],
       default: 'Исследователь',
     },
     avatar: {
       type: String,
-      required: [true, 'Должна быть ссылка на "avatar"'],
+      // required: [true, 'Должна быть ссылка на "avatar"'],
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     },
   },
@@ -87,6 +87,7 @@ userSchema.static('findUserByCredentials', function findUserByCredentials(email:
 // this - ссылка на модель User
 // функцию вызываем на модели
   return this.findOne({ email })
+    .select('+password')
     .then((user: IUser) => {
       if (!user) {
         return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));

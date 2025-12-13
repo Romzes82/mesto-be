@@ -5,8 +5,9 @@ import 'dotenv/config';
 import errorHandler from './middlewares/error-handler';
 import userRouter from './routes/users';
 import cardRouter from './routes/cards';
+import authRouter from './routes/auth'
 
-import hardCodeUserId from './middlewares/auth-hardcode-id';
+// import hardCodeUserId from './middlewares/auth-hardcode-id';
 
 const { PORT, MONGO_URL } = process.env;
 
@@ -15,7 +16,8 @@ app.use(rateLimit());
 
 app.use(express.json());
 
-app.use(hardCodeUserId);
+// app.use(hardCodeUserId);
+app.use('/', authRouter);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 app.use(errorHandler);
