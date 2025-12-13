@@ -7,6 +7,7 @@ import userRouter from './routes/users';
 import cardRouter from './routes/cards';
 import authRouter from './routes/auth'
 import auth from './middlewares/auth';
+import cookieParser from 'cookie-parser';
 
 // import hardCodeUserId from './middlewares/auth-hardcode-id';
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(rateLimit());
 
 app.use(express.json());
+app.use(cookieParser());
 
 // app.use(hardCodeUserId);
 // роуты, не требующие авторизации,
