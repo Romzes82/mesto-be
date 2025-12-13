@@ -6,6 +6,7 @@ import errorHandler from './middlewares/error-handler';
 import userRouter from './routes/users';
 import cardRouter from './routes/cards';
 import authRouter from './routes/auth'
+import auth from './middlewares/auth';
 
 // import hardCodeUserId from './middlewares/auth-hardcode-id';
 
@@ -17,7 +18,14 @@ app.use(rateLimit());
 app.use(express.json());
 
 // app.use(hardCodeUserId);
+// роуты, не требующие авторизации,
+// например, регистрация и логин
 app.use('/', authRouter);
+
+// авторизация
+app.use(auth);
+
+// роуты, которым авторизация нужна
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 app.use(errorHandler);
