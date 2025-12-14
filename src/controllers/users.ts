@@ -20,7 +20,7 @@ export const getUserInfo = (req: Request, res: Response, next: NextFunction) => 
     return next(new NotAuthorizedError('Пользователь не аутентифицирован'));
   }
 
-  console.log('User в контроллере:', req.user);
+  // console.log('User в контроллере:', req.user);
   const id = req.user._id;
 
   return User.findById(id)

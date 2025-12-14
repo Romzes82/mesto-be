@@ -25,7 +25,7 @@ interface IUserModel extends mongoose.Model<IUserDoc> {
   ) => Promise<IUserDoc | never>;
 }
 
-// const urlRegex = /^https?:\/\/(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{2,})+(\/[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+const urlRegex = /(https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\d*\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9]+\.[^\s]{2,}|www\d*\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 
 const userSchema = new mongoose.Schema(
   {
@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema(
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
       trim: false, 
       match: [
-       /(https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\d*\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9]+\.[^\s]{2,}|www\d*\.[a-zA-Z0-9]+\.[^\s]{2,})/gi,
+       urlRegex,
         // /^https?:\/\/(www\.)?[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?([\-._~:/?#[\]@!$&'()*+,;=a-zA-Z0-9]*)?$/,
       'Некорректный URL аватара: должен начинаться с http:// или https://, содержать доменную зону и допустимые символы.'
     ]

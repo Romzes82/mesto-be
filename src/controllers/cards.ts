@@ -9,7 +9,7 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
   const { name, link } = req.body;
   const owner = req.user!._id;
 
-  console.log(owner);
+  // console.log(owner);
   return Card.create({ name, link, owner })
     .then((itemCard) => res.status(201).send(itemCard))
     .catch((err) => {

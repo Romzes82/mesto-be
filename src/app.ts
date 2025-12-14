@@ -9,6 +9,7 @@ import authRouter from './routes/auth'
 import auth from './middlewares/auth';
 import cookieParser from 'cookie-parser';
 import {errors} from 'celebrate';
+import  {requestLogger, errorLogger} from './middlewares/logger'; 
 
 // import hardCodeUserId from './middlewares/auth-hardcode-id';
 
@@ -20,6 +21,7 @@ app.use(rateLimit());
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(requestLogger); // подключаем логер запросов
 
 // app.use(hardCodeUserId);
 // роуты, не требующие авторизации,
@@ -32,6 +34,8 @@ app.use(auth);
 // роуты, которым авторизация нужна
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
+
+app.use(errorLogger); // подключаем логер ошибок
 app.use(errors());// обработчик ошибок celebrate
 app.use(errorHandler);
 

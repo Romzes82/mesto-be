@@ -42,7 +42,7 @@ export default (req: Request, _res: Response, next: NextFunction) => {
     _id: new mongoose.Types.ObjectId(payload.id) // или просто payload.id для строки
   };
 
-  console.log('User в middleware:', req.user);
+  // console.log('User в middleware:', req.user);
 
 
   next(); // пропускаем запрос дальше
