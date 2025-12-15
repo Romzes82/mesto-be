@@ -1,13 +1,6 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import mongoose from 'mongoose';
 
-// export const validateUserBody = celebrate({
-//   [Segments.BODY]: {
-//     name: Joi.string().min(2).max(30),
-//     about: Joi.string().min(2).max(200),
-//   },
-// });
-
 export const validateUserBodyUpdate = celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().min(2).max(30),

@@ -5,8 +5,6 @@ import {
 import { validateUserBodyUpdate, validateAvatarBodyUpdate, validateUserParams } from '../validators/users';
 
 const router = Router();
-// router.post('/signin', login);
-// router.post('/signup', createUser);
 router.get('/', getUsers);
 // конкретный роут ДО параметрического
 router.get('/me', getUserInfo);

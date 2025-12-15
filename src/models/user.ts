@@ -3,7 +3,6 @@ import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import NotAuthorizedError from '../errors/not-authorized-error';
-// import { login } from '../controllers/users';
 
 interface IUser {
   email: string;
@@ -67,7 +66,6 @@ const userSchema = new mongoose.Schema(
       trim: false,
       match: [
         urlRegex,
-        // /^https?:\/\/(www\.)?[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?([\-._~:/?#[\]@!$&'()*+,;=a-zA-Z0-9]*)?$/,
         'Некорректный URL аватара: должен начинаться с http:// или https://, содержать доменную зону и допустимые символы.',
       ],
     },
@@ -86,12 +84,6 @@ userSchema.methods.generateToken = function () {
   });
 };
 
-// eslint-disable-next-line max-len
-// userSchema.static('findUserByCredentials', function findUserByCredentials(email: string, password: string) {
-// this - ссылка на модель User
-// функцию вызываем на модели
-// }
-
 userSchema.static('findUserByCredentials', function findUserByCredentials(email: string, password: string) {
 // this - ссылка на модель User
 // функцию вызываем на модели
@@ -100,12 +92,7 @@ userSchema.static('findUserByCredentials', function findUserByCredentials(email:
     .then((user: IUser) => {
       if (!user) {
         return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
-        // тут надо обязательные поля наверное еще
       }
-
-      // console.log(`1 - ${user}`);
-      // console.log(`2 - ${password}`);
-      // console.log(`3 - ${user.password}`);
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
@@ -113,7 +100,7 @@ userSchema.static('findUserByCredentials', function findUserByCredentials(email:
             return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
           }
 
-          return user; // теперь user доступен
+          return user;
         });
     });
 });

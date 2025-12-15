@@ -1,18 +1,11 @@
 import { NextFunction, Response, Request } from 'express';
 import mongoose from 'mongoose';
-// import { CustomRequest } from '../types/custom-request';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import NotAuthorizedError from '../errors/not-authorized-error';
-import { UserPayload } from '../types/express';
-
-// interface SessionRequest extends Request {
-//     user?: string | JwtPayload;
-// }
+import { UserPayload } from '../types/express/index';
 
 export default (req: Request, _res: Response, next: NextFunction) => {
   const token = req.cookies.jwt;
-
-  // console.log(token);
 
   if (!token) {
     next(new NotAuthorizedError('Необходима авторизация'));
@@ -42,11 +35,4 @@ export default (req: Request, _res: Response, next: NextFunction) => {
   // console.log('User в middleware:', req.user);
 
   next(); // пропускаем запрос дальше
-
-  // req.user = {
-  //   // _id: '69329e91f82b944179a7ea29',
-  //   _id: new mongoose.Types.ObjectId('69329e91f82b944179a7ea29'),
-  // };
-
-  // next();
 };

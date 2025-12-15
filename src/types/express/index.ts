@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import mongoose from 'mongoose';
 import { JwtPayload } from 'jsonwebtoken';
 

@@ -1,14 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
-// import { CustomRequest } from '../types/custom-request';
 import NotAuthorizedError from '../errors/not-authorized-error';
-
-// const { JWT_SECRET } = process.env;
-const ONE_WEEK = 3600000 * 24 * 7;
 
 export const getUsers = (_req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.send(users))

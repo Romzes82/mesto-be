@@ -13,12 +13,9 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      // return User.create({
       email, password: hash, name, about, avatar,
     }))
-    // .then((user) => res.status(201).send(user))
     .then((user) => {
-      // jwt.sign({ _id: user._id }, JWT_SECRET);
       const token = user.generateToken();
       return res
         .status(201)
@@ -49,9 +46,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      // jwt.sign({ _id: user._id }, JWT_SECRET);
       const token = user.generateToken();
-      // console.log(token);
       return res
         .status(201)
         .cookie('jwt', token, {
@@ -64,6 +59,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
+// eslint-disable-next-line no-unused-vars
 export const logout = (_req: Request, res: Response, _next: NextFunction) => res
   .clearCookie('jwt', {
     //   maxAge: ONE_WEEK,

@@ -12,8 +12,6 @@ import authRouter from './routes/auth';
 import auth from './middlewares/auth';
 import { requestLogger, errorLogger } from './middlewares/logger';
 
-// import hardCodeUserId from './middlewares/auth-hardcode-id';
-
 const { PORT, MONGO_URL } = process.env;
 
 const app = express();
@@ -26,9 +24,8 @@ app.use(rateLimit());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(requestLogger); // подключаем логер запросов
+app.use(requestLogger);
 
-// app.use(hardCodeUserId);
 // роуты, не требующие авторизации,
 // например, регистрация и логин
 app.use('/', authRouter);
@@ -40,8 +37,8 @@ app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
-app.use(errorLogger); // подключаем логер ошибок
-app.use(errors());// обработчик ошибок celebrate
+app.use(errorLogger);
+app.use(errors());
 app.use(errorHandler);
 
 /* eslint-disable no-console */

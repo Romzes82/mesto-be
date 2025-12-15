@@ -26,22 +26,3 @@ export const validateCardParams = celebrate({
       }),
   },
 });
-
-// celebrate({
-//   body: Joi.object().keys({
-//     name: Joi.string().required().min(2).max(30),
-//     link: Joi.string().required().uri(),
-//   }),
-// }),
-
-//  celebrate({
-//     params: Joi.object().keys({
-//       cardId: Joi.string()
-//         .required()
-//         .custom(validateObjectId, 'ObjectId validation')
-//         .messages({
-//           'any.invalid': 'Некорректный формат идентификатора карточки',
-//           'any.required': 'Идентификатор карточки обязателен',
-//         }),
-//     }),
-//   }),
