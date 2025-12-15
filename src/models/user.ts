@@ -64,12 +64,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       // required: [true, 'Должна быть ссылка на "avatar"'],
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-      trim: false, 
+      trim: false,
       match: [
-       urlRegex,
+        urlRegex,
         // /^https?:\/\/(www\.)?[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?([\-._~:/?#[\]@!$&'()*+,;=a-zA-Z0-9]*)?$/,
-      'Некорректный URL аватара: должен начинаться с http:// или https://, содержать доменную зону и допустимые символы.'
-    ]
+        'Некорректный URL аватара: должен начинаться с http:// или https://, содержать доменную зону и допустимые символы.',
+      ],
     },
   },
   {

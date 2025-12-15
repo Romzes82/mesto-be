@@ -7,7 +7,7 @@ import { validateCardBody, validateCardParams } from '../validators/cards';
 const router = Router();
 router.get('/', getCards);
 router.post('/', validateCardBody, createCard);
-router.delete('/:cardId',validateCardParams, deleteCard);
+router.delete('/:cardId', validateCardParams, deleteCard);
 router.put('/:cardId/likes', validateCardParams, likeCard);
 router.delete('/:cardId/likes', validateCardParams, dislikeCard);
 

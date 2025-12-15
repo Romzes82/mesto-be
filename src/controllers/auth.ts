@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/user';
 import BadRequestError from '../errors/bad-request-error';
@@ -64,14 +64,10 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
-export const logout = (_req: Request, res: Response, _next: NextFunction) => {
-
-      return res
-        .clearCookie('jwt', {
-        //   maxAge: ONE_WEEK,
-          httpOnly: true,
-        //   sameSite: true,
-        })
-        .send({ message: 'Пользователь вышел' });
-
-};
+export const logout = (_req: Request, res: Response, _next: NextFunction) => res
+  .clearCookie('jwt', {
+    //   maxAge: ONE_WEEK,
+    httpOnly: true,
+    //   sameSite: true,
+  })
+  .send({ message: 'Пользователь вышел' });

@@ -1,21 +1,26 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
 import 'dotenv/config';
+import { errors } from 'celebrate';
+import cors from 'cors';
 import errorHandler from './middlewares/error-handler';
 import userRouter from './routes/users';
 import cardRouter from './routes/cards';
-import authRouter from './routes/auth'
+import authRouter from './routes/auth';
 import auth from './middlewares/auth';
-import cookieParser from 'cookie-parser';
-import {errors} from 'celebrate';
-import  {requestLogger, errorLogger} from './middlewares/logger'; 
+import { requestLogger, errorLogger } from './middlewares/logger';
 
 // import hardCodeUserId from './middlewares/auth-hardcode-id';
 
 const { PORT, MONGO_URL } = process.env;
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3002',
+  credentials: true,
+}));
 app.use(rateLimit());
 
 app.use(express.json());

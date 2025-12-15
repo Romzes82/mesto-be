@@ -46,5 +46,5 @@ export const validateUserParams = celebrate({
         'string.empty': 'Идентификатор пользователя не может быть пустым',
         'any.required': 'Идентификатор пользователя обязателен',
       }),
-    }
+  },
 });

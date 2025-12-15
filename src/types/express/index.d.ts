@@ -13,5 +13,5 @@ declare global {
 }
 
 export interface UserPayload extends JwtPayload {
-  id: string;  // Поле из вашего токена
+  id: string; // Поле из вашего токена
 }

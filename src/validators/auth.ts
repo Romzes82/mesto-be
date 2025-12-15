@@ -10,7 +10,7 @@ export const validateUserBodyCreation = celebrate({
         'any.required': 'Поле "email" обязательно для заполнения',
         'string.empty': 'Поле "email" не может быть пустым',
       }),
-    
+
     password: Joi.string()
       .required()
       .min(8)
@@ -19,7 +19,7 @@ export const validateUserBodyCreation = celebrate({
         'any.required': 'Поле "password" обязательно для заполнения',
         'string.empty': 'Поле "password" не может быть пустым',
       }),
-    
+
     name: Joi.string()
       .min(2)
       .max(30)
@@ -27,7 +27,7 @@ export const validateUserBodyCreation = celebrate({
         'string.min': 'Минимальная длина поля "name" - {#limit} символа',
         'string.max': 'Максимальная длина поля "name" - {#limit} символов',
       }),
-    
+
     about: Joi.string()
       .min(2)
       .max(200)
@@ -35,7 +35,7 @@ export const validateUserBodyCreation = celebrate({
         'string.min': 'Минимальная длина поля "about" - {#limit} символа',
         'string.max': 'Максимальная длина поля "about" - {#limit} символов',
       }),
-    
+
     avatar: Joi.string()
       .uri()
       .messages({
@@ -54,7 +54,7 @@ export const validateUserBodyLogin = celebrate({
         'any.required': 'Поле "email" обязательно для заполнения',
         'string.empty': 'Поле "email" не может быть пустым',
       }),
-    
+
     password: Joi.string()
       .required()
       .min(8)
@@ -63,6 +63,6 @@ export const validateUserBodyLogin = celebrate({
         'any.required': 'Поле "password" обязательно для заполнения',
         'string.empty': 'Поле "password" не может быть пустым',
       }),
-    
+
   }),
 });

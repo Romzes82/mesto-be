@@ -26,7 +26,7 @@ export const getCards = (_req: Request, res: Response, next: NextFunction) => Ca
   .then((cards) => res.send(cards))
   .catch((err) => next(err));
 
-// Оставил для себя) 
+// Оставил для себя)
 // export const deleteCard = (req: Request, res: Response, next: NextFunction) => {
 //   const id = req.params.cardId;
 //   const ownerId = req.user!._id;
@@ -54,12 +54,12 @@ export const getCards = (_req: Request, res: Response, next: NextFunction) => Ca
 // красивее синтаксис async/await
 export const deleteCard = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const cardId = req.params.cardId;
+    const { cardId } = req.params;
     const userId = req.user!._id;
 
     // Находим карточку
     const card = await Card.findById(cardId);
-    
+
     if (!card) {
       throw new NotFoundError('Карточка с указанным _id не найдена');
     }

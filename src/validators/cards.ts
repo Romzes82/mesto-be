@@ -8,7 +8,6 @@ export const validateCardBody = celebrate({
   },
 });
 
-
 export const validateCardParams = celebrate({
   [Segments.PARAMS]: {
     cardId: Joi.string()
@@ -25,7 +24,7 @@ export const validateCardParams = celebrate({
         'string.empty': 'Идентификатор карточки не может быть пустым',
         'any.required': 'Идентификатор карточки обязателен',
       }),
-    }
+  },
 });
 
 // celebrate({
@@ -33,7 +32,7 @@ export const validateCardParams = celebrate({
 //     name: Joi.string().required().min(2).max(30),
 //     link: Joi.string().required().uri(),
 //   }),
-// }), 
+// }),
 
 //  celebrate({
 //     params: Joi.object().keys({

@@ -15,7 +15,7 @@ export const getUsers = (_req: Request, res: Response, next: NextFunction) => Us
   .catch((err) => next(err));
 
 export const getUserInfo = (req: Request, res: Response, next: NextFunction) => {
-    // Проверяем, что user существует
+  // Проверяем, что user существует
   if (!req.user) {
     return next(new NotAuthorizedError('Пользователь не аутентифицирован'));
   }
@@ -34,7 +34,6 @@ export const getUserInfo = (req: Request, res: Response, next: NextFunction) => 
     })
     .catch(next);
 };
-
 
 export const getUserById = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.userId;
