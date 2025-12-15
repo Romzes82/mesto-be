@@ -3,6 +3,7 @@ import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import NotAuthorizedError from '../errors/not-authorized-error';
+import { urlRegex } from '../utils/constants';
 
 interface IUser {
   email: string;
@@ -23,8 +24,6 @@ interface IUserModel extends mongoose.Model<IUserDoc> {
     password: string,
   ) => Promise<IUserDoc | never>;
 }
-
-const urlRegex = /(https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\d*\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\d*\.|(?!www\d*\.))[a-zA-Z0-9]+\.[^\s]{2,}|www\d*\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 
 const userSchema = new mongoose.Schema(
   {
@@ -72,6 +71,13 @@ const userSchema = new mongoose.Schema(
   },
   {
     versionKey: false,
+    toJSON: {
+      transform: (_doc, ret) => {
+        const { password, ...userWithoutPassword } = ret;
+
+        return userWithoutPassword;
+      },
+    },
   },
 );
 

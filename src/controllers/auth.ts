@@ -24,7 +24,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
           httpOnly: true,
           sameSite: true,
         })
-        .send({ message: 'The user has been created' });
+        .send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -58,12 +58,3 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(next);
 };
-
-// eslint-disable-next-line no-unused-vars
-export const logout = (_req: Request, res: Response, _next: NextFunction) => res
-  .clearCookie('jwt', {
-    //   maxAge: ONE_WEEK,
-    httpOnly: true,
-    //   sameSite: true,
-  })
-  .send({ message: 'Пользователь вышел' });

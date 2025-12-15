@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { createUser, login, logout } from '../controllers/auth';
-import { validateUserBodyCreation } from '../validators/auth';
+import { createUser, login } from '../controllers/auth';
+import { validateUserBodyCreation, validateUserBodyLogin } from '../validators/auth';
 
 const router = Router();
 
 router.post('/signup', validateUserBodyCreation, createUser);
-router.post('/signin', login);
-router.post('/logout', logout);
+router.post('/signin', validateUserBodyLogin, login);
 
 export default router;
